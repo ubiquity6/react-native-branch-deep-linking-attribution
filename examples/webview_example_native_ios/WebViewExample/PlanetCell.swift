@@ -98,7 +98,7 @@ class PlanetCell: UITableViewCell {
             return
         }
 
-        thumbnailImageView.image = UIImage(named: planetData.title)
+        thumbnailImageView.image = planetData.thumbnail
 
         /*
         let attributes = TextAttributes()
