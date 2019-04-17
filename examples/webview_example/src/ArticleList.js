@@ -35,24 +35,26 @@ class ArticleList extends Component {
   }
 
   componentDidMount() {
+    this._unsubscribeFromBranch = branch.subscribe(this._handleBranchLink)
+
     Linking.addEventListener('url', this._handleNonBranchUri)
     Linking.getInitialURL().then(this._handleNonBranchUri)
       .catch((error) => console.log('Error from Linking: ', error))
-
-    this._unsubscribeFromBranch = branch.subscribe(this._handleBranchLink)
   }
 
   componentWillUnmount() {
+    Linking.removeEventListener('url', this._handleNonBranchUri)
+
     if (this._unsubscribeFromBranch) {
       this._unsubscribeFromBranch()
       this._unsubscribeFromBranch = null
     }
-
-    Linking.removeEventListener('url', this._handleNonBranchUri)
   }
 
   _handleNonBranchUri(uri) {
-    console.log('Received non-Branch URI', uri)
+    if (uri.scheme != 'jdtest') return
+
+    console.warn('Received non-Branch URI: ', uri)
   }
 
   _handleBranchLink({ error, params }) {
