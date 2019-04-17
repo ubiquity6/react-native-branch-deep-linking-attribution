@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, Image, ListView, StyleSheet, TouchableHighlight, View } from 'react-native'
+import { Text, Image, Linking, ListView, StyleSheet, TouchableHighlight, View } from 'react-native'
 
 import branch from 'react-native-branch'
 
@@ -35,24 +35,11 @@ class ArticleList extends Component {
   }
 
   componentDidMount() {
-    this._unsubscribeFromBranch = branch.subscribe(({ error, params }) => {
-      if (error) {
-        console.error("Error from Branch: " + error)
-        return
-      }
+    Linking.addEventListener('url', this._handleNonBranchUri)
+    Linking.getInitialURL().then(this._handleNonBranchUri)
+      .catch((error) => console.log('Error from Linking: ', error))
 
-      console.log("Branch params: " + JSON.stringify(params))
-
-      if (!params['+clicked_branch_link']) return
-
-      // Get title and url for route
-      let title = params.$og_title
-      let url = params.$canonical_url
-      let image = params.$og_image_url
-
-      // Now push the view for this URL
-      this.props.navigation.navigate('Article', { url: url, title: title, image: image })
-    })
+    this._unsubscribeFromBranch = branch.subscribe(this._handleBranchLink)
   }
 
   componentWillUnmount() {
@@ -60,6 +47,31 @@ class ArticleList extends Component {
       this._unsubscribeFromBranch()
       this._unsubscribeFromBranch = null
     }
+
+    Linking.removeEventListener('url', this._handleNonBranchUri)
+  }
+
+  _handleNonBranchUri(uri) {
+    console.log('Received non-Branch URI', uri)
+  }
+
+  _handleBranchLink({ error, params }) {
+    if (error) {
+      console.error("Error from Branch: " + error)
+      return
+    }
+
+    console.log("Branch params: " + JSON.stringify(params))
+
+    if (!params['+clicked_branch_link']) return
+
+    // Get title and url for route
+    let title = params.$og_title
+    let url = params.$canonical_url
+    let image = params.$og_image_url
+
+    // Now push the view for this URL
+    this.props.navigation.navigate('Article', { url: url, title: title, image: image })
   }
 
   render() {
