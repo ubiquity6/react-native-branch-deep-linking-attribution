@@ -24,6 +24,14 @@ public class MainActivity extends ReactActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        // clear intent data
+        getIntent().setData(null);
+    }
+
+    @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
