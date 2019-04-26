@@ -84,7 +84,7 @@ export default class App extends Component {
 
   editingEnded() {
     // branch.openURL(this.state.text)
-    branch.openURL(this.state.text, {newActivity: true})
+    branch.openURL(this.state.text /*, {newActivity: true} */)
   }
 
   async registerView() {
