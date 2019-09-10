@@ -1,8 +1,8 @@
 PODS:
   - boost-for-react-native (1.63.0)
-  - Branch (0.27.1):
-    - Branch/Core (= 0.27.1)
-  - Branch/Core (0.27.1)
+  - Branch (0.28.1):
+    - Branch/Core (= 0.28.1)
+  - Branch/Core (0.28.1)
   - DoubleConversion (1.1.6)
   - Folly (2018.10.22.00):
     - boost-for-react-native
@@ -62,7 +62,7 @@ PODS:
     - React-jsi (= 0.60.3)
   - React-jsinspector (0.60.3)
   - react-native-branch (4.1.0):
-    - Branch (= 0.27.1)
+    - Branch (= 0.28.1)
     - React
   - React-RCTActionSheet (0.60.3):
     - React-Core (= 0.60.3)
